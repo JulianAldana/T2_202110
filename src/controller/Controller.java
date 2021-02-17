@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import model.logic.Modelo;
@@ -36,65 +37,48 @@ public class Controller {
 			int option = lector.nextInt();
 			switch(option){
 			case 1:
-				view.printMessage("--------- \nCrear Arreglo \nDar capacidad inicial del arreglo: ");
+				view.printMessage("--------- \nCreando Arreglo Dinámico \n");
 				int capacidad = lector.nextInt();
 				modelo = new Modelo(capacidad); 
-				view.printMessage("Arreglo Dinamico creado");
-				view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+				view.printMessage("Arreglo Dinamico creado"+ "\n---------");
 				break;
 
 			case 2:
-				view.printMessage("--------- \nDar cadena (simple) a ingresar: ");
-				dato = lector.next();
-				modelo.agregar(dato);
-				view.printMessage("Dato agregado");
-				view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
+				view.printMessage("--------- \nCreando Lista encadenada \n");
+				modelo = new Modelo();
+				view.printMessage("Lista encadenada creada"+ "\n---------");					
 				break;
 
 			case 3:
-				view.printMessage("--------- \nDar cadena (simple) a buscar: ");
-				dato = lector.next();
-				respuesta = modelo.buscar(dato);
-				if ( respuesta != null)
-				{
-					view.printMessage("Dato encontrado: "+ respuesta);
+				view.printMessage("--------- \nCargando Datos \n");
+				long start = System.currentTimeMillis();
+				try {
+					modelo.cargarDatosCSV();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
 				}
-				else
-				{
-					view.printMessage("Dato NO encontrado");
-				}
+				view.printMessage("Carga finalizada");
+				long end = System.currentTimeMillis();
+				//finding the time difference and converting it into seconds
+				float sec = (end - start) / 1000F;
+				view.printMessage("Duracion de: "+sec + " segundos");
 				view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
 				break;
 
-			case 4:
-				view.printMessage("--------- \nDar cadena (simple) a eliminar: ");
-				dato = lector.next();
-				respuesta = modelo.eliminar(dato);
-				if ( respuesta != null)
-				{
-					view.printMessage("Dato eliminado "+ respuesta);
-				}
-				else
-				{
-					view.printMessage("Dato NO eliminado");							
-				}
+			case 4: 
+				view.printMessage("--------- \n");
 				view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
 				break;
 
 			case 5: 
-				view.printMessage("--------- \nContenido del Arreglo: ");
-				view.printModelo(modelo);
-				view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-				break;	
+				view.printMessage("--------- \nInformacion del primer dato: ");
+				view.printMessage("Primer video " + modelo.darPrimerVideo().darPresentacion() + "\n---------");						
+				break;
 
 			case 6: 
-				view.printMessage("--------- \nContenido del Arreglo antes de Invertir: "); 
-				view.printModelo(modelo);
-				modelo.invertirDatos();
-				view.printMessage("--------- \nContenido del Arreglo despues de Invertir: "); 
-				view.printModelo(modelo);
-				view.printMessage("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-				break;	
+				view.printMessage("--------- \nInformacion del último dato: ");
+				view.printMessage("Último video " + modelo.darUltimoVideo().darPresentacion() + "\n---------");						
+				break;
 
 			case 7: 
 				view.printMessage("--------- \n Hasta pronto !! \n---------"); 
